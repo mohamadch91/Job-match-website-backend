@@ -32,7 +32,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(phone=validated_data['phone'], username=validated_data['username'],
-                                        email=validated_data['email'], first_name=validated_data['first_name'],
+                                        first_name=validated_data['first_name'],
                                         last_name=validated_data['last_name'], password=validated_data['password'])
         return user
 
@@ -72,7 +72,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'url', 'phone', 'username', 'first_name', 'last_name', 'password', 'gender', 'birth', 'registration_date',
+            'url', 'phone', 'username','email', 'first_name', 'last_name', 'password', 'gender', 'birth', 'registration_date',
             'user_image', 'city')
         extra_kwargs = {
             'first_name': {'required': True},
@@ -94,7 +94,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
     def validate_phone(self, value):
         user = self.context['request'].user
         if User.objects.exclude(pk=user.pk).filter(phone=value).exists():
-            raise serializers.ValidationError({"username": "This username is already in use."})
+            raise serializers.ValidationError({"phone": "This phone is already in use."})
         return value
 
     def update(self, instance, validated_data):
