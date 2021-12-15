@@ -31,7 +31,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
     'ROTATE_REFRESH_TOKENS': True,
 }
-ALLOWED_HOSTS = ['se-job-match.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'authen.User'
 # Application definition
