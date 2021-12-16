@@ -6,11 +6,11 @@ from .models import User
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-
+    
     @classmethod
     def get_token(cls, user):
         token = super(MyTokenObtainPairSerializer, cls).get_token(user)
-
+        
         # Add custom claims
         token['username'] = user.username
         return token
@@ -20,20 +20,23 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'pk', 'phone', 'username', 'email', 'first_name', 'last_name', 'password', 'gender', 'birth', 'registration_date', 'user_image', 'city')
+            'pk', 'phone', 'username','is_staff', 'email', 'first_name', 'last_name', 'password', 'gender', 'birth', 'registration_date', 'user_image', 'city')
 
 
 # Register Serializer
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('pk', 'phone','email', 'username', 'first_name', 'last_name', 'password',)
+        fields = ('pk', 'phone','email', 'username', 'first_name', 'last_name', 'password','is_staff')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
         user = User.objects.create_user(phone=validated_data['phone'], username=validated_data['username'],
                                         email=validated_data['email'], first_name=validated_data['first_name'],
-                                        last_name=validated_data['last_name'], password=validated_data['password'])
+                                        last_name=validated_data['last_name'], password=validated_data['password'],is_staff=validated_data['is_staff'])
+        #determine staff
+        user.is_staff = validated_data['is_staff']
+        user.save()                                
         return user
 
 
@@ -72,7 +75,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'url', 'phone', 'email','username', 'first_name', 'last_name', 'password', 'gender', 'birth', 'registration_date',
+            'url', 'phone', 'email','username', 'first_name','is_staff' 'last_name', 'password', 'gender', 'birth', 'registration_date',
             'user_image', 'city')
         extra_kwargs = {
             'first_name': {'required': True},
@@ -102,6 +105,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         instance.birth = validated_data['birth']
         instance.title = validated_data['title']
         instance.city = validated_data['city']
+        instance.is_staff = validated_data['is_staff']
         instance.address = validated_data['address']
         instance.zip = validated_data['zip']
         instance.first_name = validated_data['first_name']

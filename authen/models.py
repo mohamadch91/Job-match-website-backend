@@ -14,6 +14,8 @@ class User(AbstractUser):
     registration_date = models.DateField(auto_now_add=True)
     city = models.CharField(max_length=50, blank=True, null=True)
     user_image = models.ImageField(null=True, blank=True, max_length=1024*1024*5)
+    #check user is staff
+    is_staff = models.BooleanField(default=False)
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email', 'password']
 

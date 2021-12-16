@@ -1,4 +1,6 @@
-from .serializers import MyTokenObtainPairSerializer, ChangePasswordSerializer, UpdateUserSerializer
+
+from rest_framework import response, serializers
+from .serializers import MyTokenObtainPairSerializer, ChangePasswordSerializer, UpdateUserSerializer, UserSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import User
@@ -12,10 +14,35 @@ from rest_framework import status
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
 
 
-class MyObtainTokenPairView(TokenObtainPairView):
-    permission_classes = (AllowAny,)
-    serializer_class = MyTokenObtainPairSerializer
 
+#define class for login view and return user status and token
+class LoginView(APIView):
+    permission_classes = (AllowAny,)
+    
+    def post(self, request):
+        serializer = MyTokenObtainPairSerializer(data=request.data)
+        print(request.data)     
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token = serializer.validated_data['access']
+        # refresh = RefreshToken.for_user(user)
+        refresh=serializer.validated_data['refresh']
+        data = {
+            'token': str(token),
+            'refresh': str(refresh),
+            'user': UserSerializer(user).data,
+           
+        }
+        return response.Response(data, status=status.HTTP_200_OK)
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+   
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'pk'
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
