@@ -16,7 +16,7 @@ from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, Ou
 
 
 #define class for login view and return user status and token
-class LoginView(APIView):
+class LoginView(TokenObtainPairView):
     permission_classes = (AllowAny,)
     
     def post(self, request):
