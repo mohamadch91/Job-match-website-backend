@@ -31,7 +31,7 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
     'ROTATE_REFRESH_TOKENS': True,
 }
-ALLOWED_HOSTS = ['*','localhost:63342']
+ALLOWED_HOSTS = ['*','localhost:63342','localhost:8000','localhost']
 
 AUTH_USER_MODEL = 'authen.User'
 # Application definition
