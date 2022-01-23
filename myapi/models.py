@@ -9,6 +9,7 @@ class Job(models.Model):
     location = models.CharField(max_length=200, help_text="Location")
     link = models.URLField(help_text="Link to Job")
     date = models.DateField(help_text="Publish Date")
+    salary=models.IntegerField(('Salary'),null=True,blank=True)
     image = VersatileImageField(upload_to='images/', blank=True, null=True, ppoi_field='ppoi')
     ppoi = PPOIField()
     def __str__(self):
