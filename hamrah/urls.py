@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from myapi.views import JobViewSet, ImageViewSet, MyObtainTokenPairView
+from myapi.views import JobViewSet, ImageViewSet, MyObtainTokenPairView,ApplyJobView
 from rest_framework.routers import DefaultRouter
 from django.conf import settings
 from django.conf.urls.static import static
@@ -24,6 +24,8 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 router = DefaultRouter()
 router.register(r'job', JobViewSet, basename='job')
+#register application
+router.register(r'apply',ApplyJobView, basename='apply')
 router.register(r'image', ImageViewSet, basename='Image')
 
 urlpatterns = [

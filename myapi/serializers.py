@@ -26,7 +26,10 @@ class Jobserializer(serializers.ModelSerializer):
         print(validated_data)
         job = Job.objects.create(image=validated_data['image'],title=validated_data['title'],description=validated_data['description'],
                                     location=validated_data['location'],company=validated_data['company'],
-                                    link=validated_data['link'],date=validated_data['date'],salary=validated_data['salary'],users_applied=validated_data['users_applied'])
+                                    link=validated_data['link'],date=validated_data['date'],salary=validated_data['salary'])
+        job.users_applied.set(validated_data['users_applied'])                                                   
+        # print(job)                            
+                                   
         return job
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
