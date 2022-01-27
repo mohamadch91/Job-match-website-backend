@@ -10,6 +10,8 @@ class Job(models.Model):
     link = models.URLField(help_text="Link to Job")
     date = models.DateField(help_text="Publish Date")
     salary=models.IntegerField(('Salary'),null=True,blank=True)
+    #users list applied to jobs
+    users_applied = models.ManyToManyField('auth.User', related_name='jobs_applied', blank=True)
     image = VersatileImageField(upload_to='images/', blank=True, null=True, ppoi_field='ppoi')
     ppoi = PPOIField()
     def __str__(self):
